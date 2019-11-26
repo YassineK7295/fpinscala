@@ -12,3 +12,4 @@
                 replacing the first element of a List with a different value.
 * Exercise 3.4: Generalize tail to the function drop, which removes the first n elements from a list.
 * Exercise 3.5: Implement dropWhile, which removes elements from the List prefix as long as they match a predicate.
+* Exercise 3.6: Implement a function, init, that returns a List consisting of all but the last element of a List.

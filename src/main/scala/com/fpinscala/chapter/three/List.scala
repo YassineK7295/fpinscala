@@ -5,11 +5,19 @@ case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
 object List {
+    def init[A](l: List[A]): List[A] = l match {
+        case Nil => Nil
+        case Cons(_, Nil) => Nil
+        case Cons(x, xs) => Cons(x, init(xs))
+    }
+
+    @annotation.tailrec
     def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
         case Nil => Nil
         case Cons(x, xs) => if (f(x)) dropWhile(xs, f) else l
     }
 
+    @annotation.tailrec
     def drop[A](l: List[A], n: Int): List[A] = {
         if (n == 0) l
         else {

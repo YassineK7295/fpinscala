@@ -14,7 +14,6 @@ object Exercise1 {
             case Cons(h, t) => h + List.sum(t)
             case _ => 101
         }
-
         print(x)
     }
 }
