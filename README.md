@@ -11,3 +11,4 @@
 * Exercise 3.3: Implement the function setHead for
                 replacing the first element of a List with a different value.
 * Exercise 3.4: Generalize tail to the function drop, which removes the first n elements from a list.
+* Exercise 3.5: Implement dropWhile, which removes elements from the List prefix as long as they match a predicate.
