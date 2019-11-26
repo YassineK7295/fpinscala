@@ -1,0 +1,224 @@
+Chapter 1: Introduction to functional programming
+
+1: What is functional programming?
+Premise - We construct programs using only pure functions
+	i.e. functions that have no side effects
+A function has a side effect if it does something other than simply return a resule
+	Modify variable, or data structure in place, or field on an object
+	Throwing an exception or halting with an error
+	Printing to the console or reading user input (I/O)
+	Reading from or writing to a file, or drawing on the screen
+FP is a restriction on how we write programs, not on what programs we can express
+There is an increase in modularity that we grain from programming with pure functions
+Pure functions (due to modularity), are then:
+	Easier to test, reuse, parallelize, generaize, and reason aboue
+	Thus much less prone to bugs
+
+1.2: Exactly what is a (PURE) function?
+A function f with input type A and output type B (written in Scala as a single type: A => B) is a computation that relates every value "a" of type A to exactly one value b of type B such that b is determined solely by the value of a
+	Any changing state of an internal or external process is irrelevant to computing the result f(a)
+	Ex. function intToString having type Int => String
+No side effects: A function has no observable effect on the execution of the program other than to compute a result given its input
+Function vs procedure:
+	Function implies no side effects
+	Procedure may have side effects
+Referencial Transparency: the expression can be replaced by its result without changing the meaning of the program
+	Ex. 2 + 3 in a program can be replaced by 5 and the program will do the same thing
+*An expression e is referencially transparent if, for all programs p, all occurences of e in p can be replaced by the result of evaluating e without affecting the meaning of. A function f is pure if the expression f(x) is referentially transparent for all refenrentially transparent x.
+1.3: Referential Transparency, Purity, And The Substitution Model
+Prove StringBuilder.append is NOT a pure function
+Pre RT substitution:
+	val x = new StringBuilder("Hello")
+	val y = x.append(", World!")
+	val r1 = y.toString
+	val r2 = y.toString
+	-> r1 and r2 have the same value
+Post RT substitution:
+	val x = new StringBuilder("Hello")
+	val r1 = x.append(", World!")
+	val r2 = x.append(", World!")
+	-> r1 and r2 do NOT have the same value
+	-> thus append function is not a PURE function
+	-> by the time r2 calls x.append, r1 will have already mutated the object reference by x
+
+Chapter 2: Getting started with functional programming in Scala
+
+"Unit" return type serves the same purpose as "void"
+Scala code has to be in an object or a class
+Methods take the form of:
+	def methodName(paramName: ParamType): ReturnType = { ...code here ... }
+Terminating semicolon is optional
+Curly braces for method body is optional IF the method implementation is only one expression
+
+The "object" keyword creates a new singleton type, which is like a "class" that only has a single named instance
+Scala has no equivalent to Java's "static" keyword
+	An "object" is often used in Scala where you might use a class with static members in Java (Ex. for the main method)
+The "return" keyword is optional, where usually the last computer expression is returned
+The return type itself is option, as Scala can infer the type
+	Unless it's a private function, it's generally best practice to include the return type
+Statements are separated by newlines or by semicolons
+A "val" in an immutable variable
+The "main" method is sometimes called a procedure to emphasize the fact that it has side effects
+	def main(args: Array[String]): Unit = { ... }
+Scala will look for a method named "main" with a specific signature when the program runs
+Usually a return type of "Unit" is a hint that the method has a side effect
+
+2.2: Running Our Program
+The build tool for Scala is "sbt"
+To invoke the Scala compiler and copile the Scala code to Java bytcode, use the "scalac" compiler
+> scalac MyModule.scala
+This will generate files ending with the ".class" suffix
+	These files contain compiled code that can be run with the JVM
+The code can be executed using the "scala" command-line tool:
+> scala MyModule
+You can also load a file into REPL
+> scala // to open Scala REPL
+scala> :load MyModule.scala
+You can past code that spans multiple lines with the command ":paste"
+
+2.3: Modules, Objects, and Namespaces
+Every value in Scala is an "object" and each "object" may have zero or more "members"
+	Unlike Java, values of primative types like Int are also considered objects
+An object whose primary purpose is giving its members a namespace is sometimes called a "module"
+A "member" can be a method declared with the "def" keyword, or it can be another object declaed with "val" or "object"
+Typical object-oriented dot notation follows:
+	A namespace followed by a dot, followed by the name of the member
+	MyModule.abs(-42)
+Function takes params vs method which is a member of an object
+	method(obj, 12) vs obj.method(12)
+Like the "+" method, any method can be called without the dot and parantheses when there is a single argument
+	1 + 3 == 1.+(3)
+	MyModule.abs(42) == MyModule abs 42
+By importing an object, you bring it's members into scope
+scala> import MyModule.abs
+scala> abs(-24)
+You can bring all of an object's (nonprivate) members into scope with underscore syntax
+scala> import MyModule._
+
+2.4: Higher-Order Functions: Passing Functions to Functions
+Functions as values, functions can:
+	be assigned to variables, stored in data structures, and passed as arguments to functions
+HOFs allow functions as parameters
+To avoid mutating a loop variable, loops are written as recursive functions
+Scala detects this sort of self-recursion and compiles it to the same sort of bytecode as would be emitted for a while loop
+	This avoids StackOverflowError as each function call will consume a call stack fram for each iterations
+def factorial(n: Int) = {
+	def go(m: Int, res: Int) =
+		if (m <= 1) res
+		else go(m-1, m*res)
+	
+	go(n, 1)
+}
+A call is said to be in "tail position" if the called does nothing other than return the value of the recursive call
+	go(m-1, m*res) is in tail position
+	1 + go(m-1, m*res) is not
+Scala compiles these into iterative loops
+We can tell Scala compiler using the "tailrec" annotation so it can give us a compile error if it's unable to eliminate the tail calls of the function
+	@annotation.tailrec
+	def go(m: Int, res: Int): Int = ...
+Passing a function as a param
+	def formatResult(name: String, n: Int, f: Int => Int): String = {
+		val msg = "The %s of %d is %d"
+		msg.format(name, n, f(n))
+	}
+Variable-naming conventions
+	It's common convention to use names like f, g, and h for parameters to a higher-order function
+	HOF are so general that they have no opinion on what the argument should actually do
+
+2.5: Polymorphic Functions: Abstracting Over Types
+Monomorphic functions - functions that operate on only one type of data
+Polymorphic functions - functions that operate on more than one type of data
+	Parametric polymorphism, not to be confuse with OOP concept of polymorphism
+Ex. Here we pass the comparison for each type as the to some value
+	def findFirst[A](arr: Array[A], p: A => Boolean): Int = {
+		@annotation.tailrec
+		def loop(n: Int): Int =
+			if (n >= arr.length) -1
+			else if (p(arr(n))) n
+			else loop(n + 1)
+		
+		loop(0)
+	}
+"A" here is a "type variable" (convention is one upper cased letter), and is part of a list called the "type parameters"
+Annonymous functions are sometimes passed to HOF
+	(x: Int, y: Int) => x == y
+	Scala inferes the return type, so it's missing here
+Functions as values in Scala
+	A function lieral is action an object with a method called apply
+	Object that have the "apply" method, can be called as if they themselves were methods
+	Function literal like (a, b) => a < b, is really for object creation:
+		val lessThan = new Function2[Int, Int, Boolean] {
+			def apply(a: Int, b: Int) = a < b
+		}
+	Calling the lessThan method is the same as calling the lessThan.apply
+	Function2 is a train (an interface) to represent function objects that take two arguments
+Functions are called "first-class values" because they are just ordinary Scala objects
+
+2.6: Following Types To Implementations
+Scala's standard library provides a "compose" method on "Function1" interface
+	f "compose" g
+	g "andThen" f
+	f(g(x))
+	scala> val f = (x: Double) => math.Pi / 2 - x
+	scala> val cos = f andThen math.sin
+
+Chapter 3: Functional data structures
+
+3.1: Defining Functional Data Structures
+Functional data structures are by definition immutable
+In general, we introduce a data type with the "trait" keyword"
+A "trait" is an abstract interfact that may optionally contain implementations of some methods
+Adding "sealed" in front means that all implementations of the "trait" must be declared in this file
+A List can be empty, denoted by the data constructor Nil, or it can be nonempty, denoted by the data constructor Cons
+A nonempty list consists of an initial element, "head", followed by a List (possibly empty) of the remaining elements (the tail)
+	sealed trait List[+A]
+	case object Nil extends List[Nothing]
+	case class Cons[+A](head: A, tail: List[A]) extends List[A]
+Example: List("a", "b") is the same as Cons("a", Cons("b", Nil))
+	Similar to a Singly Linked List
+The "+" in front of the type parameter A is a "variance annotation" that signals that A is a "covariant" or "positive" parameter of List
+	If A is Int, because of the "+", we also cover all subtypes of Int (such as Nil)
+	Formally put: for all types X and Y, if X is a subtype of Y, then List[X] is a subtype of List[Y]
+	"Nothing" is a subtype of all types, which means that in conjunction with the variance annotation, Nil can be considered a List[Int], a List[Double], etc.
+
+3.2: Pattern Matching
+def product(ds: List[Double]): Double = ds match {
+	case Nil: 0
+	case Cons(0.0, _) => 0.0
+	case Cons(x, xs) => x * product(xs)
+}
+*It's common convention to use xs, ys, as, or bs as variable names for a sequence of some sort, and x, y, a, or b as the name of a single element of a sequence
+If multiple patterns match the target, Scala chooses the first matching case
+Companion objects
+	A "companion object" is just an object with the same name as the data type
+	It's where the functions for creating or working with values of the data type live
+The pattern "_" matches any expression
+	List(1, 2, 3) match { case _ => 42 } results in 42
+	Inicates a variable whose value does not affect the result of the case
+Capture or bind a subexpression
+	List(1, 2, 3) match { case Cons(h, _) => h } results in 1
+		Uses a data constructor pattern to capture the first element in this case
+	List(1, 2, 3) match { case Cons(_, t) => t } results in List(2, 3)
+	List(1, 2, 3) match { case Nil => 42 } results in MatchError at runtime
+		MatchError => none of the cases match
+Variadic Functions
+	Functions where a parameter represents zero or more of that type
+	def apply[A](as: A*): List[A] = ...
+	Syntactic sugar for creating and passing a "Seq" of elements
+	"Seq" is the interface in Scala, implemented by sequence-like data structures such as lists, queues, or vectors
+	The argument "as" will be bound to a Seq[A], which has functions "head" and "tail"
+	The special "_*" type annotation allows us to pass a Seq to a variadic method
+
+3.3: Data Sharing in Functional Data Structures
+When we add an element to the front of an existing list, we return a new list, (ex. Cons(1, xs)
+Since lists are immutable, we don't need to copy xs, we can just reuse it
+	This is called "data sharing"
+When removing an element from the front, we simply take the tail of the constructor
+	The original list is still available
+Linked list:
+	["a", ref] -> ["b", ref] -> ["c", ref] -> ["d", ref]
+	List("a", "b", "c", "d") has ref of element "a"
+	List("a", "b", "c", "d").tail has ref of element "b"
+	List("b", "c", "d") has ref of element "b"
+	All lists use the same data in memory
+
