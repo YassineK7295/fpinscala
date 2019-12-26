@@ -42,9 +42,9 @@ object List {
         case Cons(x,xs) => x + sum(xs)
     }
 
-    def product(ints: List[Int]): Int = ints match {
+    def product(ds: List[Double]): Double = ds match {
         case Nil => 0
-        case Cons(0, xs) => 0
+        case Cons(0, _) => 1
         case Cons(x, xs) => x * product(xs)
     }
 

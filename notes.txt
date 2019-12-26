@@ -222,3 +222,13 @@ Linked list:
 	List("b", "c", "d") has ref of element "b"
 	All lists use the same data in memory
 
+3.3.2: Improving type inference for higher-order functions
+To improve type inference, you can break an argument list into sub lists
+When a function has multiple argument groups, type information flows from left to right across these argument groups, not requiring type annotation
+def dropWhile[A](as: List[A])(f: A => Boolean): List[A] = ...
+val ex1 = dropWhile(List(1,2,3,4))(x => x < 4)
+* dropWhile is curried
+	A function of two arguments can be represented as a function that accepts one argument and returns another function of one argument
+
+3.4: Recursion Over Lists and Generalizing to Higher-Order Functions
+
