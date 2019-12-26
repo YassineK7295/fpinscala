@@ -231,4 +231,20 @@ val ex1 = dropWhile(List(1,2,3,4))(x => x < 4)
 	A function of two arguments can be represented as a function that accepts one argument and returns another function of one argument
 
 3.4: Recursion Over Lists and Generalizing to Higher-Order Functions
+If we remove the short-circuit case of the product method (i.e. case Cons(0.0, _) => 0.0) then the sum and product methods are mostly identical
+	The differences remain the type of list the list, the return value of the Nil, and the operation
+Here, we can extract the commonalities, and implement sum and product using the generalized function (i.e. foldRight)
+def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
+	case Nil => z
+	case (x, xs) => f(x, foldRight(xs, z)(f))
+}
+def sum(as: List[Int]): Int = {
+	foldRight(as, 0)((x, y) => x + y)
+}
+def product(as: List[Double]): Double = {
+	foldRight(as, 1.0)(_ * _) // shorthand for (x, y) => x * y
+}
 
+Underscore notation can be used for parameters of an annonymous function
+	(x + y) => x + y is equivalent to _ + _, so long as Scala can infer the types
+	

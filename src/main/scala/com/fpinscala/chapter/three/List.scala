@@ -11,6 +11,16 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def length[A](as: List[A]): Int = as match {
+        case Nil => 0
+        case Cons(_, xs) => 1 + length(xs)
+    }
+
+    def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
+        case Nil => z
+        case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    }
+
     @annotation.tailrec
     def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
         case Nil => Nil
