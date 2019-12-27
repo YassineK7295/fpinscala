@@ -11,6 +11,8 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def reverse[A](ax: List[A]): List[A] = foldLeft(ax, Nil: List[A])((bx, x) => Cons(x, bx))
+
     def lengthLeft[A](as: List[A]): Int = foldLeft(as, 0)((n, _) => n + 1)
 
     def productLeft(as: List[Int]): Int = foldLeft(as, 1)(_ * _)
