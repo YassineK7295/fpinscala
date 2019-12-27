@@ -15,3 +15,4 @@
 * Exercise 3.6: Implement a function, init, that returns a List consisting of all but the last element of a List.
 * Exercise 3.8: What happens when you execute foldRight(List(1, 2, 3), Nil:List[Int])(Cons(_, _))
 * Exercise 3.9: Compute the length of a list using foldRight
+* Exercise 3.10: Implement tail recursive foldLeft.

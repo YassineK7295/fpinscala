@@ -11,12 +11,19 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    @annotation.tailrec
+    def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = as match {
+        case Nil => z
+        case Cons(x, xs) => foldLeft(xs, f(z, x))(f)
+    }
+
     def length[A](as: List[A]): Int = as match {
         case Nil => 0
         case Cons(_, xs) => 1 + length(xs)
     }
 
-    def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
+    // Note: this is not tail recursive and will cause stackOverflow
+    def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B = as match {
         case Nil => z
         case Cons(x, xs) => f(x, foldRight(xs, z)(f))
     }
