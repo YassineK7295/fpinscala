@@ -11,6 +11,12 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def lengthLeft[A](as: List[A]): Int = foldLeft(as, 0)((n, _) => n + 1)
+
+    def productLeft(as: List[Int]): Int = foldLeft(as, 1)(_ * _)
+
+    def sumLeft(as: List[Int]): Int = foldLeft(as, 0)(_ + _)
+
     @annotation.tailrec
     def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = as match {
         case Nil => z

@@ -16,3 +16,4 @@
 * Exercise 3.8: What happens when you execute foldRight(List(1, 2, 3), Nil:List[Int])(Cons(_, _))
 * Exercise 3.9: Compute the length of a list using foldRight
 * Exercise 3.10: Implement tail recursive foldLeft.
+* Exercise 3.11: Implement sum, product, and length using foldLeft.
