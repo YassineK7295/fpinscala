@@ -11,6 +11,14 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def merge[A](ax: List[List[A]]): List[A] = {
+        reverse(
+            foldRightTailRec(ax, Nil: List[A])((bx, lst) =>
+                foldRightTailRec(bx, lst)((cx, lst) => append(lst, cx))
+            )
+        )
+    }
+
     def appendHead[A](as: List[A], obj: A): List[A] = reverse(
         foldLeft(as, List(obj))(
             (bx, x) => Cons(x, bx)

@@ -20,3 +20,4 @@
 * Exercise 3.12: Implement reverse of list using fold.
 * Exercise 3.13: Implement foldRight using foldLeft, in order for it to be tail recursive.
 * Exercise 3.14: Implement append in terms of either foldLeft or foldRight.
+* Exercise 3.15: Write a function that concatenates a list of lists into a single list.
