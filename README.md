@@ -18,3 +18,4 @@
 * Exercise 3.10: Implement tail recursive foldLeft.
 * Exercise 3.11: Implement sum, product, and length using foldLeft.
 * Exercise 3.12: Implement reverse of list using fold.
+* Exercise 3.13: Implement foldRight using foldLeft, in order for it to be tail recursive.

@@ -11,6 +11,10 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def foldRightTailRec[A, B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(as), z)(
+        (b: B, a: A) => f(a, b)
+    )
+
     def reverse[A](ax: List[A]): List[A] = foldLeft(ax, Nil: List[A])((bx, x) => Cons(x, bx))
 
     def lengthLeft[A](as: List[A]): Int = foldLeft(as, 0)((n, _) => n + 1)
