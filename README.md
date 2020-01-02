@@ -24,3 +24,4 @@
 * Exercise 3.16: Write a pure function that transforms a list of integers by adding 1 to each element.
 * Exercise 3.17: Write a function that turns each value in a List[Double] to a String using d.toString.
 * Exercise 3.18: Write a function map that generalizes modifying each element in a list while maintaining the structure of the list.
+* Exercise 3.19: Write a function filter that removes elements from a list unless they satisfy a given predicate. Use it to remove odd numbers from an List[Int].

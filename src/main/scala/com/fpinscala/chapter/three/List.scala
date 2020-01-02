@@ -11,6 +11,12 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def filter[A](as: List[A])(f: A => Boolean): List[A] =
+        foldRightTailRec(as, Nil: List[A])((x, xs) =>
+            if (f(x)) Cons(x, xs)
+            else xs
+        )
+
     def map[A,B](as: List[A])(f: A => B): List[B] =
         foldRightTailRec(as, Nil: List[B])((x, xs) => Cons(f(x), xs))
 
