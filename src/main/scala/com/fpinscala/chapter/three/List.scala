@@ -11,6 +11,9 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def map[A,B](as: List[A])(f: A => B): List[B] =
+        foldRightTailRec(as, Nil: List[B])((x, xs) => Cons(f(x), xs))
+
     def doubleToString(l: List[Double]): List[String] =
         foldRightTailRec(l, Nil: List[String])((x, xs) => Cons(x.toString, xs))
 

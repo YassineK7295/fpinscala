@@ -23,3 +23,4 @@
 * Exercise 3.15: Write a function that concatenates a list of lists into a single list.
 * Exercise 3.16: Write a pure function that transforms a list of integers by adding 1 to each element.
 * Exercise 3.17: Write a function that turns each value in a List[Double] to a String using d.toString.
+* Exercise 3.18: Write a function map that generalizes modifying each element in a list while maintaining the structure of the list.
