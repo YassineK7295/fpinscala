@@ -11,6 +11,9 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def addInteger(l: List[Int], a: Int): List[Int] =
+        foldRightTailRec(l, Nil: List[Int])((x, xs) => Cons(x+a, xs))
+
     def merge[A](outerLst: List[List[A]]): List[A] = {
         foldRightTailRec(outerLst, Nil: List[A])((innerLst, outputLst) =>
             foldRightTailRec(innerLst, outputLst)((obj, lst) =>
