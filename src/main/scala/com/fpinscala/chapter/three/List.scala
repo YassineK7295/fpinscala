@@ -11,6 +11,9 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def doubleToString(l: List[Double]): List[String] =
+        foldRightTailRec(l, Nil: List[String])((x, xs) => Cons(x.toString, xs))
+
     def addInteger(l: List[Int], a: Int): List[Int] =
         foldRightTailRec(l, Nil: List[Int])((x, xs) => Cons(x+a, xs))
 
