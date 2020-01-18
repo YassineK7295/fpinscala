@@ -11,6 +11,9 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def filterWithFlatMap[A](as: List[A])(f: A => Boolean): List[A] =
+        flatMap(as)(x => if (f(x)) List(x) else Nil: List[A])
+
     def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] =
         foldLeft(as, Nil: List[B])((xs, x) =>
             merge(List(xs, f(x)))
