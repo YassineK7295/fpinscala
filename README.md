@@ -27,3 +27,4 @@
 * Exercise 3.19: Write a function filter that removes elements from a list unless they satisfy a given predicate. Use it to remove odd numbers from an List[Int].
 * Exercise 3.20: Write a function flatMap that works like a map except that the function given will return a list instead of a single result, and the list should be inserted into the final resulting list.
 * Exercise 3.21: Use flatMap to implement filter.
+* Exercise 3.22: Write a function that accepts two lists and constructs a new list by adding corresponding elements. For example, List(1,2,3) and List(4,5,6) become List(5,7,9).

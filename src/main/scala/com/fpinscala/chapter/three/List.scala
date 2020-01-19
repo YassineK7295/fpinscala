@@ -11,6 +11,20 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    // Applies the function to the first n elements of each list, where n is the size of the shortest list
+    def crossApply[A](as: List[A], bs: List[A])(f: (A, A) => A): List[A] = as match {
+        case Cons(x, Nil) => bs match {
+            case Nil => Nil
+            case Cons(y, _) => Cons(f(x, y), Nil)
+        }
+        case Cons(x, xs: List[A]) => bs match {
+            case Nil => Nil
+            case Cons(y, Nil) => Cons(f(x, y), Nil) // ERROR! SIZE MISMATCH!!
+            case Cons(y, ys) => Cons(f(x, y), crossApply(xs, ys)(f))
+        }
+        case _ => Nil
+    }
+
     def filterWithFlatMap[A](as: List[A])(f: A => Boolean): List[A] =
         flatMap(as)(x => if (f(x)) List(x) else Nil: List[A])
 
