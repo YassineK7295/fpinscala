@@ -11,6 +11,19 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def zipWith[A](as: List[A], bs: List[A])(f: (A, A) => A): List[A] = as match {
+        case Cons(x, Nil) => bs match {
+            case Nil => Nil
+            case Cons(y, _) => Cons(f(x, y), Nil)
+        }
+        case Cons(x, xs: List[A]) => bs match {
+            case Nil => Nil
+            case Cons(y, Nil) => Cons(f(x, y), Nil)
+            case Cons(y, ys) => Cons(f(x, y), crossApply(xs, ys)(f))
+        }
+        case _ => Nil
+    }
+
     // Applies the function to the first n elements of each list, where n is the size of the shortest list
     def crossApply[A](as: List[A], bs: List[A])(f: (A, A) => A): List[A] = as match {
         case Cons(x, Nil) => bs match {
@@ -19,7 +32,7 @@ object List {
         }
         case Cons(x, xs: List[A]) => bs match {
             case Nil => Nil
-            case Cons(y, Nil) => Cons(f(x, y), Nil) // ERROR! SIZE MISMATCH!!
+            case Cons(y, Nil) => Cons(f(x, y), Nil)
             case Cons(y, ys) => Cons(f(x, y), crossApply(xs, ys)(f))
         }
         case _ => Nil
