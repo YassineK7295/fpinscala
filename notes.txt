@@ -247,4 +247,20 @@ def product(as: List[Double]): Double = {
 
 Underscore notation can be used for parameters of an annonymous function
 	(x + y) => x + y is equivalent to _ + _, so long as Scala can infer the types
-	
+
+"List" in the Scala standard library uses "::" for "Cons"
+	Cons(1, Cons(2, Nil)) is actually 1 :: (2 :: Nil), both equal to List(1, 2)
+	For pattern matching, Cons(x, xs) becomes x :: xs
+*In Scala, all methods whose names end in ":" are right-associative
+	The expression "x :: xs" is actually "xs.::(x)", which in turn calls the data constructor ::(x, xs)
+
+Some useful methods for lists, defined as methods ON List[A], rather than standalone functions
+	def take(n: Int): List[A] - Returns a list consisting of the first "n" elements of "this"
+	def takeWhile(f: A => Boolean): List[A] - Longest valid prefix of "this" whose elements all pass the predicate f
+	def forall(f: A => Boolean): Boolean - "true" if and only if all elements pass the predicate f
+	def exists(f: A => Boolean): Boolean - "true" if any element passes the predicate f
+	scanLeft and scanRight - Like foldLeft and foldRight, but they return the List of partial results rather than just the final accumulated value
+
+3.4.2: Loss of efficiency when assembling list functions from simpler components
+A problem with List is that, although the operations and algorithms are general-purpose funcions, the resulting implementation isn't always efficient
+	We may end up making multiple passes over the same input	

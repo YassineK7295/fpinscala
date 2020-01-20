@@ -11,6 +11,28 @@ object List {
         case Cons(x, xs) => Cons(x, init(xs))
     }
 
+    def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+
+        @annotation.tailrec
+        def hasSubsequenceInner(supInner: List[A], subInner: List[A]): Boolean = supInner match {
+            case Nil => subInner match {
+                case Nil => true
+                case _ => false
+            } case Cons(x, Nil) => subInner match {
+                case Nil => true
+                case Cons(y, Nil) => x == y
+                case Cons(_, _) => false
+            } case Cons(x, xs) => subInner match {
+                case Nil => true
+                case Cons(y, Nil) => if (x == y) true else hasSubsequenceInner(xs, sub)
+                case Cons(y, ys) => if (x == y) hasSubsequenceInner(xs, ys) else hasSubsequenceInner(xs, sub)
+            }
+
+        }
+
+        hasSubsequenceInner(sup, sub)
+    }
+
     def zipWith[A](as: List[A], bs: List[A])(f: (A, A) => A): List[A] = as match {
         case Cons(x, Nil) => bs match {
             case Nil => Nil
@@ -19,7 +41,7 @@ object List {
         case Cons(x, xs: List[A]) => bs match {
             case Nil => Nil
             case Cons(y, Nil) => Cons(f(x, y), Nil)
-            case Cons(y, ys) => Cons(f(x, y), crossApply(xs, ys)(f))
+            case Cons(y, ys) => Cons(f(x, y), zipWith(xs, ys)(f))
         }
         case _ => Nil
     }
