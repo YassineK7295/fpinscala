@@ -283,5 +283,4 @@ Simple binary tree
 	case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
 Leaf is a tree with no childrean trees, only a value
 Branch is a tree with only children trees, no value (for this implementation)
-In this implementation, values are stored in the leave nodes, and only full trees (every node other than the leaves has two children) can be represented
 
