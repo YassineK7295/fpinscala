@@ -263,4 +263,25 @@ Some useful methods for lists, defined as methods ON List[A], rather than standa
 
 3.4.2: Loss of efficiency when assembling list functions from simpler components
 A problem with List is that, although the operations and algorithms are general-purpose funcions, the resulting implementation isn't always efficient
-	We may end up making multiple passes over the same input	
+	We may end up making multiple passes over the same input
+
+3.5: Trees
+Algebraic data type (ADT) is a data type defined by one or more data constructors, each of which may contain zero or more arguments
+	The data type is the "sum" or "union" of its data constructors
+	Each data constructor is the "product" of its arguments
+	Lists are an example of an ADT
+Pairs and tuples of other arities (arities - The number of arguments or operands a function or operation takes) are also ADTs
+> val p = ("Bob", 42)
+> p._1
+> p match { case (a, b) => b }
+p is a pair whose type is (String, Int), which is syntactic sugar for Tuple2[String, Int]
+	We can pattern match like any other case class
+
+Simple binary tree
+	sealed trait Tree[+A]
+	case class Leaf[A](value: A) extends Tree[A]
+	case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
+Leaf is a tree with no childrean trees, only a value
+Branch is a tree with only children trees, no value (for this implementation)
+In this implementation, values are stored in the leave nodes, and only full trees (every node other than the leaves has two children) can be represented
+
