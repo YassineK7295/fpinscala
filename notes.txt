@@ -284,3 +284,7 @@ Simple binary tree
 Leaf is a tree with no childrean trees, only a value
 Branch is a tree with only children trees, no value (for this implementation)
 
+We typically use ADTs for situations where the set of cases is "closed" (known to be fixed)
+	For List and Tree, changing the set of data constructors would significantly change what these data types are
+	List is a singly linked list with two cases: Nil and Cons
+

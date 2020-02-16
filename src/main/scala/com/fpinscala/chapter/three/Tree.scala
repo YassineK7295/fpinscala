@@ -5,6 +5,27 @@ case class Leaf[A](value: A) extends Tree[A]
 case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
 
 object Tree {
+    def mapWithFold[A,B](tree: Tree[A])(f: A => B): Tree[B] = {
+        fold(tree)(x => Leaf(f(x)): Tree[B])((x, y) => Branch(x, y))
+    }
+
+    def depthWithFold[A](tree: Tree[A]): Int = {
+        fold(tree)(_ => 0)((x, y) => 1 + x.max(y))
+    }
+
+    def maxWithFold(tree: Tree[Int]): Int = {
+        fold(tree)(x => x)((x, y) => x.max(y))
+    }
+
+    def sizeWithFold[A](tree: Tree[A]): Int = {
+        fold(tree)(_ => 1)((x: Int, y: Int) => 1 + x + y)
+    }
+
+    def fold[A,B,C](tree: Tree[A])(f: A => B)(g: (B, B) => B): B = tree match {
+        case Leaf(v) => f(v)
+        case Branch(left, right) => g(fold(left)(f)(g), fold(right)(f)(g))
+    }
+
     def map[A,B](tree: Tree[A])(f: A => B): Tree[B] = tree match {
         case Leaf(v) => Leaf(f(v))
         case Branch(left, right) => Branch(map(left)(f), map(right)(f))
