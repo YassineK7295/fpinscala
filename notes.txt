@@ -288,3 +288,60 @@ We typically use ADTs for situations where the set of cases is "closed" (known t
 	For List and Tree, changing the set of data constructors would significantly change what these data types are
 	List is a singly linked list with two cases: Nil and Cons
 
+Chapter 4: Handling errors without exceptions
+
+We can represent failures and exceptions with ordinary values & we can write HOFs that abstract out common patterns of error handling and recovery
+	Returning errors as values is safer and retains referential transparency
+
+4.1. THE GOOD AND BAD ASPECTS OF EXCEPTIONS
+Referential transparent (RT) expressions do not depend on context and may be reasoned about locally
+	Non-RT expressions are context-dependent and require more global reasoning
+	RT expression 42 + 5 does not depend on anything else, it's always 47
+	"throw new Exception("fail")" depends on which try block (if any) it's nested within
+
+Two main problems with exceptions:
+	1) Exceptions break RT and introduce context dependence
+		Exceptions should be used only for error handling, not for control flow
+	2) Exceptions are not type-safe
+		The signature does not tell anything about the fact that exceptions may occur
+		If you forget to check for an exception, the exception wont be detected until runtime
+
+Checked exceptions
+- Java's checked exceptions force a decision about how to handle or reraise an error, but result in builerplate for callers
+	This solution wont work for HOFs bc HOFs are unaware of what exceptions their arguments could raise
+	"map" does not know what exception the function argument can throw
+
+- Primary benefit of exceptions: allow us to consolidate and centralize error-handling logic
+
+4.2: POSSIBLE ALTERNATIVES TO EXCEPTIONS
+"Seq" is the common interface of various linear sequence-like collections
+A "partial function" is a function not defined for some inputs (i.e. throws exception for some inputs)
+	Function makes some assumptions about its inputs that aren't implied by the input types
+	Non-terminating for some inputs is another reason
+Returning a default value or null has a few consequences
+	Allows the error to silently propogate
+		Compiler wont inform the caller if they forget to check this condition
+	Explicit "if" statements to check whether the caller has received a "real" result (per caller)
+	Not applicable to polymorphic code
+		Some output types might not have a sentinel value of that type
+			Null can only be returned for non-primatives, wont work for Boolean output type
+	Passing function as HOF become difficult
+		Each function must be treated differently to account for its "real value check"
+
+4.3. THE OPTION DATA TYPE
+"Option" has two cases
+	It can be defined -> also known as "Some"
+	Or it can be undefinted -> also known as "None"
+> sealed trait Option[+A]
+> case class Some[+A](get: A) extends Option[A]
+> case class None extends Option[Nothing]
+>
+> def mean(xs: Seq[Double]): Option[Double] =
+>	if (xs.isEmpty) None
+>	else Some(xs.sum / xs.length)
+The return type now reflects the possibility that the result may not always be defined
+"mean" is a "total function" because we always return Option[Double]
+	Every valid output is wrapped in "Some"
+	Every invalid input is mapped to "None"
+	The compiler forces the caller to deal explicitly with the possibility of failure
+	
