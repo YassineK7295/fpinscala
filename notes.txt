@@ -344,4 +344,31 @@ The return type now reflects the possibility that the result may not always be d
 	Every valid output is wrapped in "Some"
 	Every invalid input is mapped to "None"
 	The compiler forces the caller to deal explicitly with the possibility of failure
-	
+
+4.3.1: Usage patterns for Option
+- Map lookup for given key returns Option
+- headOption and lastOption defined for lists and other iterables return an Option containing the first or last elements of a sequence if it's nonemtpy
+- Option can be thought of like a List that can contain at most one element
+	- Many List functions have analogous functions on Option
+- Analogous functions:
+	- def map[B](f: A => B): Option[B]
+		- apply f if the Option is not None
+	- def flatMapt[B](f: A => Option[B]): Option[B]
+		- apply f, which may fail, to the Option if not None
+	- def getOrElse[B >: A](default: => B): B
+		- The B >: A says that te B type parameter must be a supertype of A
+	- def orElse[B >: A](ob: => Option[B]): Option[B]
+		- Don't evaluate ob unless needed
+	- def filter(f: A => Boolean): Option[B]
+		- convert Some to None if the value doesn't satisfy f
+- "default: => B" type annotation indicates that the argument is of type B, but won't be evaluated until it's needed by the function
+
+*** Case class has a constructor with arguments, and therefore can exist as many instances
+*** Case object does not take arguments for it's constructor, and so exists as a singleton
+
+- You can apply many functions to an Option, even if it has a null value, without having to handle null checks upfront
+	- Null checks are deferred for later code to handle
+	> lookupByName("Joe").map(_.department).getOrElse("Default Dept.")
+		- does not error out if the lookup returns null
+
+- flapMap is similar to map, except the function that we provide to transform the result can itself fail
