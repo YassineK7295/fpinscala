@@ -372,3 +372,4 @@ The return type now reflects the possibility that the result may not always be d
 		- does not error out if the lookup returns null
 
 - flapMap is similar to map, except the function that we provide to transform the result can itself fail
+	- we can construct a computation with multiple stages, any of which may fail, and the computation will abort as soon as the first failure is encountered, since None.flatMap(f) will immediately return None, without running f.

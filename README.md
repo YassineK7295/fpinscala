@@ -35,3 +35,5 @@
 * Exercise 3.27: Write a function depth that returns the maximum path length from the root of a tree to any leaf.
 * Exercise 3.28: Write a function map, analogous to the method of the same name on List, that modifies each element in a tree with a given function.
 * Exercise 3.29: Generalize size, maximum, depth, and map, writing a new function fold that abstracts over their similarities. Reimplement them in terms of this more general function. Can you draw an analogy between this fold function and the left and right folds for List?
+* Exercise 4.1: Implement Option/Some/None and the analogous list functions.
+* Exercise 4.2: Use flatMap to implement the variance function.
