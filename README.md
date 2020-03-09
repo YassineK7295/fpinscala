@@ -37,3 +37,4 @@
 * Exercise 3.29: Generalize size, maximum, depth, and map, writing a new function fold that abstracts over their similarities. Reimplement them in terms of this more general function. Can you draw an analogy between this fold function and the left and right folds for List?
 * Exercise 4.1: Implement Option/Some/None and the analogous list functions.
 * Exercise 4.2: Use flatMap to implement the variance function.
+* Exercise 4.3: Write a generic function map2 that combines two Option values using a binary function. If either Option value is None, then the return value is too.
