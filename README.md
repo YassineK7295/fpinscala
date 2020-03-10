@@ -38,3 +38,4 @@
 * Exercise 4.1: Implement Option/Some/None and the analogous list functions.
 * Exercise 4.2: Use flatMap to implement the variance function.
 * Exercise 4.3: Write a generic function map2 that combines two Option values using a binary function. If either Option value is None, then the return value is too.
+* Exercise 4.4: Write a function sequence that combines a list of Options into one Option containing a list of all the Some values in the original list. If the original list contains None even once, the result of the function should be None; otherwise the result should be Some with a list of all the values.

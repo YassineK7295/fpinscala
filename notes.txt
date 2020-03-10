@@ -375,7 +375,7 @@ The return type now reflects the possibility that the result may not always be d
 	- we can construct a computation with multiple stages, any of which may fail, and the computation will abort as soon as the first failure is encountered, since None.flatMap(f) will immediately return None, without running f
 - Common pattern is to transform an Option via map, flatMap, and/or filter, then use getOrElse to do error handling at the end
 - orElse allows you to get an Option back, which allows you to apply further Option computations
-- a common idiom is to do o.getOrElse(throw new Exception("FAIL")) to conver None nack to an exception
+- a common idiom is to do o.getOrElse(throw new Exception("FAIL")) to convert None back to an exception
 	- this is only used if the callers of the exception do not have a way of recovering
 	- if they do, use an option to allow for recovery
 
@@ -387,7 +387,7 @@ The return type now reflects the possibility that the result may not always be d
 	res2: Some(1.0)
 - lift(f) returns a function which maps None to None, and applies f to the contents of Some. f need not be aware of the Optio type at all
 - the "Try" function is a general-purpose function to convert from an exception-based API to an Option-oriented API
-	- Uses a non-stric or lazy argument, as indicated by the => A as the type of "a"
+	- Uses a non-strict or lazy argument, as indicated by the => A as the type of "a"
 > def Try[A](a: => A): Option[A] = 
 	try Some(a)
 	catch { case e: Exception => None }

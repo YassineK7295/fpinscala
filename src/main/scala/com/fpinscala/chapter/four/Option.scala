@@ -33,6 +33,29 @@ case object None extends Option[Nothing] {
 }
 
 object Option {
+    def sequence[A](a: List[Option[A]]): Option[List[A]] = {
+        val n = a.length
+
+        val lst = a.foldRight(Nil: List[A])((x, ls) => x match {
+            case Some(b) => b::ls
+            case None => ls
+        })
+
+        if (n == lst.length) Option(lst) else None
+    }
+
+    def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = {
+        a match {
+            case Some(a) => {
+                b match {
+                    case Some(b) => Some(f(a, b))
+                    case None => None
+                }
+            }
+            case None => None
+        }
+    }
+
     def apply[A](get: A) = get match {
         case null => None
         case _ => Some(get)
